@@ -22,6 +22,7 @@ var realFps = 0;
 function setup() {
     noCursor();
     createCanvas(displayWidth, displayHeight+verticalOffset);
+    canvasMagic();
     unit = displayHeight/8;
     if(displayWidth > displayHeight){
         prt = true; 
@@ -133,13 +134,19 @@ function draw() {
 }
 
 function displayResized() {
-    resizeCanvas(displayWidth, displayHeightverticalOffset);
-    unit = displayHeight/8;
+    canvasMagic();
     if(displayWidth > displayHeight){
         prt = true; 
     } else {
         prt = false;
     }
+}
+
+function canvasMagic(){
+    
+    resizeCanvas(max(displayWidth, windowWidth), max(displayHeight,windowHeight));
+    unit = displayHeight/8;
+    
 }
 
 
