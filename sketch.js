@@ -133,18 +133,13 @@ function draw() {
     }
 }
 
-function displayResized() {
+function windowResized() {
     canvasMagic();
-    if(displayWidth > displayHeight){
-        prt = true; 
-    } else {
-        prt = false;
-    }
 }
 
 function canvasMagic(){
     
-    resizeCanvas(max(displayWidth, windowWidth), max(displayHeight,windowHeight));
+    resizeCanvas(windowWidth, windowHeight);
     unit = displayHeight/8;
     
 }
