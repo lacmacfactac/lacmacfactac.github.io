@@ -16,11 +16,12 @@ var mode = 0; // 0: once, 1: hold, 2: toggle
 var enabled = false;
 var debug = false;
 var fuse = false;
+var verticalOffset = 50;
 
 var realFps = 0;
 function setup() {
     noCursor();
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth, windowHeight+verticalOffset);
     unit = windowHeight/8;
     if(windowWidth > windowHeight){
         prt = true; 
@@ -95,7 +96,7 @@ function draw() {
     for(var i = 0; i < 8; i++){
         var colorHolder = colorTable[pixelTable[curs][i]];
         fill(colorHolder[0],colorHolder[1],colorHolder[2]);
-        ellipse(width/2,(i+0.5)*unit,unit*.8,unit*.8);
+        ellipse(width/2,verticalOffset+(i+0.5)*unit,unit*.8,unit*.8);
     }
     curs++;
     if(curs >= limit){
@@ -132,7 +133,7 @@ function draw() {
 }
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
+    resizeCanvas(windowWidth, windowHeightverticalOffset);
     unit = windowHeight/8;
     if(windowWidth > windowHeight){
         prt = true; 
