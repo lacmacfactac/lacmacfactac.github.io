@@ -16,7 +16,7 @@ var mode = 0; // 0: once, 1: hold, 2: toggle
 var enabled = false;
 var debug = false;
 var fuse = false;
-var verticalOffset = 50;
+var verticalOffset = 0;
 
 var realFps = 0;
 function setup() {
