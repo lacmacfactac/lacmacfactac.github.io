@@ -15,6 +15,7 @@ var prt;
 var mode = 0; // 0: once, 1: hold, 2: toggle 
 var enabled = false;
 var debug = false;
+var fuse = false;
 
 var realFps = 0;
 function setup() {
@@ -142,6 +143,7 @@ function windowResized() {
 
 
 function mousePressed(){
+    if(fuse){
     curs = 0;
     switch(mode){
         case 0:
@@ -159,6 +161,10 @@ function mousePressed(){
         default:
         break;
 
+    }
+    } else {
+    fullscreen(true);
+        fuse = true;
     }
 }
 
