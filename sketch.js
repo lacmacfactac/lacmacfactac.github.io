@@ -23,7 +23,7 @@ function setup() {
     noCursor();
     createCanvas(displayWidth, displayHeight+verticalOffset);
     canvasMagic();
-    unit = displayHeight/8;
+    unit = displayHeight/(stripLength+1);
     if(displayWidth > displayHeight){
         prt = true; 
     } else {
@@ -32,8 +32,7 @@ function setup() {
     background(127);
 
     var urlP = getURLParams();
-
-    if(urlP.colors !==null){
+    if(!(urlP.colors ===undefined)){
         colorDataRaw = split(urlP.colors,",");
         var fullCol = 0;
         for(var i = 0; i < colorDataRaw.length;){
@@ -48,7 +47,7 @@ function setup() {
         colorTable[0] = [255,255,255];
     }
 
-    if(urlP.pixels !== null){
+    if(!(urlP.pixels ===undefined)){
         pixelDataRaw = split(urlP.pixels,",");
         var slit = 0;
         for(var i = 0; i < pixelDataRaw.length;){
@@ -65,7 +64,7 @@ function setup() {
 
     }
 
-    if(urlP.mode !== null){
+    if(!(urlP.mode ===undefined)){
         var modeHolder = urlP.mode;
         if(modeHolder == "once" || modeHolder == "0"){
             mode = 0;
@@ -80,12 +79,14 @@ function setup() {
         mode = 2;
     }
 
-    if(urlP.fps !== null){
+    if(!(urlP.fps  ===undefined)){
         frameRate(int(urlP.fps));
     }
 
+    if(!(urlP.debug === undefined)){
     if(urlP.debug == 1 || urlP.debug == "true"){
         debug = true;
+    }
     }
     ellipseMode(CENTER);
     background(0);
@@ -97,7 +98,7 @@ function draw() {
     for(var i = 0; i < 8; i++){
         var colorHolder = colorTable[pixelTable[curs][i]];
         fill(colorHolder[0],colorHolder[1],colorHolder[2]);
-        ellipse(width/2,verticalOffset+(i+0.5)*unit,unit*.8,unit*.8);
+        ellipse(width/2,(unit/2)+(i+0.5)*unit,unit*.8,unit*.8);
     }
     curs++;
     if(curs >= limit){
@@ -140,7 +141,7 @@ function windowResized() {
 function canvasMagic(){
     
     resizeCanvas(windowWidth, windowHeight);
-    unit = displayHeight/8;
+    unit = displayHeight/(stripLength+1);
     
 }
 
