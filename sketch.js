@@ -1,118 +1,97 @@
 /*
- * @name Flocking
- * @description Demonstration of Craig Reynolds' "Flocking" behavior.
+ * @name Schooling
+ * @description Demonstration of Craig Reynolds' "Schooling" behavior.
  * See: http://www.red3d.com/cwr/
  * Rules: Cohesion, Separation, Alignment
  * (from <a href="http://natureofcode.com">natureofcode.com</a>).
- *  Drag mouse to add boids into the system.
+ *  Drag mouse to add fish into the system.
  */
 
 
-var flock;
+var school;
 var mousePosition;
 var centerPoint;
-var text;
 var logo;
+var sprite;
+
+var canvas;
 
 p5.disableFriendlyErrors = true;
 
 function setup() {
   logo = loadImage("assets/halak.png");
-  createCanvas(window.innerWidth, window.innerHeight);
-  //createP("Drag the mouse to generate new boids.");
+  sprite = loadImage("assets/fish copy.png");
+  canvas = createCanvas(window.innerHeight, window.innerHeight*0.8);
+  canvas.parent('fishery');
+  //createP(displayDensity());
 
-centerPoint = createVector(windowWidth/2, windowHeight/2.5);
+centerPoint = createVector(width/2, height/2);
 
-  flock = new Flock();
-  // Add an initial set of boids into the system
+  school = new School();
   for (var i = 0; i < 50; i++) {
-    var b = new Boid(centerPoint.x-30, centerPoint.y);
-    flock.addBoid(b);
+    var b = new Fish(centerPoint.x-30, centerPoint.y);
+    school.addFish(b);
   }
   imageMode(CENTER);
+  
 }
 
 function draw() {
-  background(255);
+clear();
   mousePosition = createVector(mouseX, mouseY);
-  flock.run();
-  for (let b of flock.boids) {
-    /*
-    if (b.isFront == false) {
-      b.render();
-    }
-    */
+  school.run();
+  for (let b of school.schoolOfFish) {
     b.render();
   }
-  image(logo, centerPoint.x, centerPoint.y, logo.width / 4, logo.height / 4);
-  /*
-  for (let b of flock.boids) {
-    if (b.isFront == true) {
-      b.render();
-    }
-  }
-  */
+  image(logo, centerPoint.x, centerPoint.y, logo.width, logo.height);
+
 }
 
-// Add a new boid into the System
-/*
-function mouseDragged() {
-  flock.addBoid(new Boid(mouseX, mouseY));
-}
-*/
-// The Nature of Code
-// Daniel Shiffman
-// http://natureofcode.com
+///////////////////////////////////////////////SCHOOL
 
-// Flock object
-// Does very little, simply manages the array of all the boids
-
-function Flock() {
-  // An array for all the boids
-  this.boids = []; // Initialize the array
+function School() {
+  this.schoolOfFish = [];
 }
 
-Flock.prototype.run = function() {
-  for (var i = 0; i < this.boids.length; i++) {
-    this.boids[i].run(this.boids); // Passing the entire list of boids to each boid individually
+School.prototype.run = function() {
+  for (var i = 0; i < this.schoolOfFish.length; i++) {
+    this.schoolOfFish[i].run(this.schoolOfFish);
   }
 }
 
-Flock.prototype.addBoid = function(b) {
-  this.boids.push(b);
+School.prototype.addFish = function(b) {
+  this.schoolOfFish.push(b);
 }
 
-// Boid class
-// Methods for Separation, Cohesion, Alignment added
 
-function Boid(x, y) {
-  this.isFront = (Math.random() >= 0.5 ? true : false);
+/////////////////////////////////////////////FISH
+
+function Fish(x, y) {
   this.acceleration = createVector(0, 0);
   this.velocity = createVector(random(-1, 1), random(-1, 1));
   this.position = createVector(x, y);
-  this.r = 3.0;
+  this.dim = 3.0;
   this.maxspeed = 2; // Maximum speed
   this.maxforce = 0.05; // Maximum steering force
   this.affinity = (Math.random(0.9,1.1));
 }
 
-Boid.prototype.run = function(boids) {
-  this.flock(boids);
+Fish.prototype.run = function(schoolOfFish) {
+  this.school(schoolOfFish);
   this.update();
   this.borders();
-  //this.render();
 }
 
-Boid.prototype.applyForce = function(force) {
+Fish.prototype.applyForce = function(force) {
   // We could add mass here if we want A = F / M
   this.acceleration.add(force);
 }
 
 // We accumulate a new acceleration each time based on three rules
-Boid.prototype.flock = function(boids) {
-  var sep = this.separate(boids); // Separation
-  var ali = this.align(boids); // Alignment
-  var coh = this.cohesion(boids); // Cohesion
+Fish.prototype.school = function(schoolOfFish) {
+  var sep = this.separate(schoolOfFish); // Separation
+  var ali = this.align(schoolOfFish); // Alignment
+  var coh = this.cohesion(schoolOfFish); // Cohesion
   var cent = this.seek(centerPoint);
   var m = this.seek(mousePosition);
   // Arbitrarily weight these forces
@@ -143,7 +122,7 @@ Boid.prototype.flock = function(boids) {
 }
 
 // Method to update location
-Boid.prototype.update = function() {
+Fish.prototype.update = function() {
   // Update velocity
   this.velocity.add(this.acceleration);
   // Limit speed
@@ -155,7 +134,7 @@ Boid.prototype.update = function() {
 
 // A method that calculates and applies a steering force towards a target
 // STEER = DESIRED MINUS VELOCITY
-Boid.prototype.seek = function(target) {
+Fish.prototype.seek = function(target) {
   var desired = p5.Vector.sub(target, this.position); // A vector pointing from the location to the target
   // Normalize desired and scale to maximum speed
   desired.normalize();
@@ -166,51 +145,33 @@ Boid.prototype.seek = function(target) {
   return steer;
 }
 
-Boid.prototype.render = function() {
+Fish.prototype.render = function() {
   // Draw a triangle rotated in the direction of velocity
   var theta = this.velocity.heading() + radians(90);
-  noFill();
-  stroke(180);
   push();
   translate(this.position.x, this.position.y);
-  rotate(theta + PI);
-  beginShape();
-  vertex(0, this.r * 2);
-  vertex(this.r, 0);
-  vertex(-this.r, -this.r * 3);
-  vertex(this.r, -this.r * 3);
-  vertex(-this.r, 0);
-
-  /*
-  vertex(0, -this.r * 2);
-  vertex(-this.r, this.r * 2);
-  vertex(this.r, this.r * 2);
-  */
-  endShape(CLOSE);
+  rotate(theta);
+  image(sprite,0,0);
   pop();
 }
 
 // Wraparound
-Boid.prototype.borders = function() {
-  if (this.position.x < -this.r) this.position.x = width + this.r;
-  if (this.position.y < -this.r) this.position.y = height + this.r;
-  if (this.position.x > width + this.r) this.position.x = -this.r;
-  if (this.position.y > height + this.r) this.position.y = -this.r;
+Fish.prototype.borders = function() {
+  if (this.position.x < -this.dim) this.position.x = width + this.dim;
+  if (this.position.y < -this.dim) this.position.y = height + this.dim;
+  if (this.position.x > width + this.dim) this.position.x = -this.dim;
+  if (this.position.y > height + this.dim) this.position.y = -this.dim;
 }
 
-// Separation
-// Method checks for nearby boids and steers away
-Boid.prototype.separate = function(boids) {
+Fish.prototype.separate = function(schoolOfFish) {
   var desiredseparation = 25.0;
   var steer = createVector(0, 0);
   var count = 0;
-  // For every boid in the system, check if it's too close
-  for (var i = 0; i < boids.length; i++) {
-    var d = p5.Vector.dist(this.position, boids[i].position);
-    // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
+  
+  for (var i = 0; i < schoolOfFish.length; i++) {
+    var d = p5.Vector.dist(this.position, schoolOfFish[i].position);
     if ((d > 0) && (d < desiredseparation)) {
-      // Calculate vector pointing away from neighbor
-      var diff = p5.Vector.sub(this.position, boids[i].position);
+      var diff = p5.Vector.sub(this.position, schoolOfFish[i].position);
       diff.normalize();
       diff.div(d); // Weight by distance
       steer.add(diff);
@@ -235,14 +196,14 @@ Boid.prototype.separate = function(boids) {
 
 // Alignment
 // For every nearby boid in the system, calculate the average velocity
-Boid.prototype.align = function(boids) {
+Fish.prototype.align = function(schoolOfFish) {
   var neighbordist = 50;
   var sum = createVector(0, 0);
   var count = 0;
-  for (var i = 0; i < boids.length; i++) {
-    var d = p5.Vector.dist(this.position, boids[i].position);
+  for (var i = 0; i < schoolOfFish.length; i++) {
+    var d = p5.Vector.dist(this.position, schoolOfFish[i].position);
     if ((d > 0) && (d < neighbordist)) {
-      sum.add(boids[i].velocity);
+      sum.add(schoolOfFish[i].velocity);
       count++;
     }
   }
@@ -259,15 +220,15 @@ Boid.prototype.align = function(boids) {
 }
 
 // Cohesion
-// For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
-Boid.prototype.cohesion = function(boids) {
+// For the average location (i.e. center) of all nearby fish, calculate steering vector towards that location
+Fish.prototype.cohesion = function(schoolOfFish) {
   var neighbordist = 50;
   var sum = createVector(0, 0); // Start with empty vector to accumulate all locations
   var count = 0;
-  for (var i = 0; i < boids.length; i++) {
-    var d = p5.Vector.dist(this.position, boids[i].position);
+  for (var i = 0; i < schoolOfFish.length; i++) {
+    var d = p5.Vector.dist(this.position, schoolOfFish[i].position);
     if ((d > 0) && (d < neighbordist)) {
-      sum.add(boids[i].position); // Add location
+      sum.add(schoolOfFish[i].position); // Add location
       count++;
     }
   }
