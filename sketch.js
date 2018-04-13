@@ -24,7 +24,7 @@ var fishWeight = 0;
 p5.disableFriendlyErrors = true;
 
 var firstRun = true;
-var menuHeight = 60;
+var menuHeight = 80;
 
 function setup() {
   logo = loadImage("assets/halak.png");
