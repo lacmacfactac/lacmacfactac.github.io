@@ -14,6 +14,8 @@ var centerPoint;
 var text;
 var logo;
 
+p5.disableFriendlyErrors = true;
+
 function setup() {
   logo = loadImage("assets/halak.png");
   createCanvas(window.innerWidth, window.innerHeight);
@@ -23,7 +25,7 @@ centerPoint = createVector(windowWidth/2, windowHeight/2.2);
 
   flock = new Flock();
   // Add an initial set of boids into the system
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < 70; i++) {
     var b = new Boid(centerPoint.x, centerPoint.y);
     flock.addBoid(b);
   }
@@ -42,7 +44,7 @@ function draw() {
     */
     b.render();
   }
-  image(logo, centerPoint.x, centerPoint.y, logo.width / 3, logo.height / 3);
+  image(logo, centerPoint.x, centerPoint.y, logo.width / 4, logo.height / 4);
   /*
   for (let b of flock.boids) {
     if (b.isFront == true) {
@@ -53,10 +55,11 @@ function draw() {
 }
 
 // Add a new boid into the System
+/*
 function mouseDragged() {
   flock.addBoid(new Boid(mouseX, mouseY));
 }
-
+*/
 // The Nature of Code
 // Daniel Shiffman
 // http://natureofcode.com
@@ -94,6 +97,7 @@ function Boid(x, y) {
   this.r = 3.0;
   this.maxspeed = 2; // Maximum speed
   this.maxforce = 0.05; // Maximum steering force
+  this.affinity = (Math.random(0.9,1.1));
 }
 
 Boid.prototype.run = function(boids) {
@@ -119,10 +123,10 @@ Boid.prototype.flock = function(boids) {
   var d = dist(this.position.x, this.position.y, centerPoint.x, centerPoint.y);
   var multiplier = 0;
   var force = 2.0;
-  if (d < 75) {
+  if (d < 75*this.affinity) {
     multiplier = -1;
   }
-  if (d > 150) {
+  if (d > 150*this.affinity) {
     multiplier = 1;
   }
   
