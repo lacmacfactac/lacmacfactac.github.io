@@ -9,38 +9,40 @@ body {
 
 body {}
 
-.menu{
-  text-align:center;
-  padding:0px;
-  margin:0px;
-  background:#FAFAFA;
+.menu {
+  text-align: center;
+  padding: 0px;
+  margin: 0px;
+  background: #FAFAFA;
   float: left;
-  width:33.33%;
+  width: 33.33%;
   font-family: 'Roboto Condensed', sans-serif;
-  
 }
 
-.item{
-  
-  float:left;
-  width:50%;
+.item {
+  float: left;
+  width: 50%;
 }
 
-.block{
-  float:left;
-  clear:left;
-  width:100%;
-  text-align:center;
+.block {
+  float: left;
+  clear: left;
+  width: 100%;
+  text-align: center;
 }
 
-.contactBlock{
-  float:left;
-  text-align:center;
-  margin-bottom:30px;
-  width:33.33%;
+.contactBlock {
+  float: left;
+  text-align: center;
+  margin-bottom: 30px;
+  width: 33.33%;
   font-family: 'Roboto Condensed', sans-serif;
-  
+}
 
+.textBlock {
+  margin: 0 auto;
+  width: 35%;
+  text-align: justify;
 }
 
 span {
@@ -49,35 +51,41 @@ span {
 }
 
 @media screen and (max-width:500px) {
-  .menu, .item, .contactBlock {
-    width:100%; 
+  .menu,
+  .item,
+  .contactBlock,
+  .textBlock {
+    width: 100%;
   }
 }
 
 a:link {
-    color: #333333;
-    background-color: transparent;
-    text-decoration: none;
+  color: #333333;
+  background-color: transparent;
+  text-decoration: none;
 }
+
 a:visited {
-    color: #333333;
-    background-color: transparent;
-    text-decoration: none;
+  color: #333333;
+  background-color: transparent;
+  text-decoration: none;
 }
+
 a:hover {
-    color: #333333;
-    background-color: transparent;
-    text-decoration: underline;
+  color: #333333;
+  background-color: transparent;
+  text-decoration: underline;
 }
+
 a:active {
-    color: #333333;
-    background-color: transparent;
-    text-decoration: underline;
+  color: #333333;
+  background-color: transparent;
+  text-decoration: underline;
 }
 
 #fishery {
   margin: 0;
-  padding:0;
+  padding: 0;
   display: block;
   /* This centers our sketch horizontally. */
   justify-content: center;
