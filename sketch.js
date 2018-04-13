@@ -14,18 +14,24 @@ var centerPoint;
 var logo;
 var sprite;
 
+var positionModifier;
+
 var canvas;
+
+var logoWeight = 0;
+var fishWeight = 0;
 
 p5.disableFriendlyErrors = true;
 
 function setup() {
   logo = loadImage("assets/halak.png");
   sprite = loadImage("assets/fish copy.png");
-  canvas = createCanvas(window.innerHeight, window.innerHeight*0.8);
+  canvas = createCanvas(window.innerWidth, window.innerHeight*0.8);
   canvas.parent('fishery');
   //createP(displayDensity());
 
 centerPoint = createVector(width/2, height/2);
+positionModifier = createVector(0,0);
 
   school = new School();
   for (var i = 0; i < 50; i++) {
@@ -39,12 +45,15 @@ centerPoint = createVector(width/2, height/2);
 function draw() {
 clear();
   mousePosition = createVector(mouseX, mouseY);
+  positionModifier = createVector(-(mouseX-width/2)/(width/2), -(mouseY-height/2)/(height/2));
   school.run();
   for (let b of school.schoolOfFish) {
     b.render();
   }
-  image(logo, centerPoint.x, centerPoint.y, logo.width, logo.height);
-
+  image(logo, centerPoint.x+positionModifier.x*logoWeight, centerPoint.y+positionModifier.y*logoWeight, logo.width, logo.height);
+strokeWeight(1);
+stroke(200);
+line(0,height,width,height);
 }
 
 ///////////////////////////////////////////////SCHOOL
@@ -71,7 +80,7 @@ function Fish(x, y) {
   this.velocity = createVector(random(-1, 1), random(-1, 1));
   this.position = createVector(x, y);
   this.dim = 3.0;
-  this.maxspeed = 2; // Maximum speed
+  this.maxspeed = 3; // Maximum speed
   this.maxforce = 0.05; // Maximum steering force
   this.affinity = (Math.random(0.9,1.1));
 }
