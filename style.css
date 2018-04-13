@@ -33,13 +33,23 @@ body {}
   text-align:center;
 }
 
+.contactBlock{
+  float:left;
+  text-align:center;
+  margin-bottom:30px;
+  width:33.33%;
+  font-family: 'Roboto Condensed', sans-serif;
+  
+
+}
+
 span {
-  display: inline-block;*/
+  display: inline-block;
   vertical-align: middle;
 }
 
 @media screen and (max-width:500px) {
-  .menu, .item {
+  .menu, .item, .contactBlock {
     width:100%; 
   }
 }

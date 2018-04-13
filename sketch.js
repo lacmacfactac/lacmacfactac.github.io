@@ -24,6 +24,7 @@ var fishWeight = 0;
 p5.disableFriendlyErrors = true;
 
 var firstRun = true;
+var menuHeight = 60;
 
 function setup() {
   logo = loadImage("assets/halak.png");
@@ -260,15 +261,15 @@ function canvasSetup() {
   if (firstRun) {
     firstRun = false;
     if (window.innerWidth > window.innerHeight) {
-      canvas = createCanvas(window.innerWidth, window.innerHeight * 0.8);
+      canvas = createCanvas(window.innerWidth, window.innerHeight-menuHeight);
     } else {
-      canvas = createCanvas(window.innerWidth, window.innerWidth * 0.8);
+      canvas = createCanvas(window.innerWidth, window.innerWidth-menuHeight);
     }
   } else {
     if (window.innerWidth > window.innerHeight) {
-      canvas = resizeCanvas(window.innerWidth, window.innerHeight * 0.8);
+      canvas = resizeCanvas(window.innerWidth, window.innerHeight-menuHeight);
     } else {
-      canvas = resizeCanvas(window.innerWidth, window.innerWidth * 0.8);
+      canvas = resizeCanvas(window.innerWidth, window.innerWidth-menuHeight);
     }
   }
   centerPoint = createVector(width / 2, height / 2);
