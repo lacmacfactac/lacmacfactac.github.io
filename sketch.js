@@ -21,12 +21,12 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   //createP("Drag the mouse to generate new boids.");
 
-centerPoint = createVector(windowWidth/2, windowHeight/2.2);
+centerPoint = createVector(windowWidth/2, windowHeight/2.5);
 
   flock = new Flock();
   // Add an initial set of boids into the system
-  for (var i = 0; i < 70; i++) {
-    var b = new Boid(centerPoint.x, centerPoint.y);
+  for (var i = 0; i < 50; i++) {
+    var b = new Boid(centerPoint.x-30, centerPoint.y);
     flock.addBoid(b);
   }
   imageMode(CENTER);
@@ -82,10 +82,6 @@ Flock.prototype.addBoid = function(b) {
   this.boids.push(b);
 }
 
-// The Nature of Code
-// Daniel Shiffman
-// http://natureofcode.com
-
 // Boid class
 // Methods for Separation, Cohesion, Alignment added
 
@@ -122,22 +118,22 @@ Boid.prototype.flock = function(boids) {
   // Arbitrarily weight these forces
   var d = dist(this.position.x, this.position.y, centerPoint.x, centerPoint.y);
   var multiplier = 0;
-  var force = 2.0;
-  if (d < 75*this.affinity) {
-    multiplier = -1;
+  var force = 1.5;
+  if (d < 200*this.affinity) {
+    multiplier = -2;
   }
-  if (d > 150*this.affinity) {
+  if (d > 300*this.affinity) {
     multiplier = 1;
   }
   
   var mDist = dist(this.position.x, this.position.y, mousePosition.x, mousePosition.y);
   var mForceMultiplier = constrain(mDist/(Math.max(50,width/4)),0,1);
   mForceMultiplier = 1-mForceMultiplier;
-  m.mult(mForceMultiplier*-2);
+  m.mult(mForceMultiplier*-3);
   cent.mult(multiplier * force);
-  sep.mult(2.5);
-  ali.mult(1.0);
-  coh.mult(2.0);
+  sep.mult(3.2);
+  ali.mult(1.5);
+  coh.mult(2.5);
   // Add the force vectors to acceleration
   this.applyForce(m);
   this.applyForce(cent);
@@ -174,7 +170,7 @@ Boid.prototype.render = function() {
   // Draw a triangle rotated in the direction of velocity
   var theta = this.velocity.heading() + radians(90);
   noFill();
-  stroke(220);
+  stroke(180);
   push();
   translate(this.position.x, this.position.y);
   rotate(theta + PI);
