@@ -16,7 +16,7 @@ var logo;
 
 function setup() {
   logo = loadImage("assets/halak.png");
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(window.innerWidth, window.innerHeight);
   //createP("Drag the mouse to generate new boids.");
 
 centerPoint = createVector(windowWidth/2, windowHeight/2.2);
