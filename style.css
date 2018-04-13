@@ -1,22 +1,77 @@
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
+html,
 body {
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+  overflow-x: hidden;
+  font-family: 'Roboto', sans-serif;
 }
 
-#fishery{
-  margin: 0;
-  display: flex;
+body {}
 
+.menu{
+  text-align:center;
+  padding:0px;
+  margin:0px;
+  background:#FAFAFA;
+  float: left;
+  width:33.33%;
+  font-family: 'Roboto Condensed', sans-serif;
+  
+}
+
+.item{
+  
+  float:left;
+  width:50%;
+}
+
+.block{
+  float:left;
+  clear:left;
+  width:100%;
+  text-align:center;
+}
+
+span {
+  display: inline-block;*/
+  vertical-align: middle;
+}
+
+@media screen and (max-width:500px) {
+  .menu, .item {
+    width:100%; 
+  }
+}
+
+a:link {
+    color: #333333;
+    background-color: transparent;
+    text-decoration: none;
+}
+a:visited {
+    color: #333333;
+    background-color: transparent;
+    text-decoration: none;
+}
+a:hover {
+    color: #333333;
+    background-color: transparent;
+    text-decoration: underline;
+}
+a:active {
+    color: #333333;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+#fishery {
+  margin: 0;
+  padding:0;
+  display: block;
   /* This centers our sketch horizontally. */
   justify-content: center;
-
   /* This centers our sketch vertically. */
   /*align-items: center;*/
-  top:50px;
-  
-  
+  top: 50px;
 }
-

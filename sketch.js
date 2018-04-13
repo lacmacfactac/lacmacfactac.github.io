@@ -23,37 +23,40 @@ var fishWeight = 0;
 
 p5.disableFriendlyErrors = true;
 
+var firstRun = true;
+
 function setup() {
   logo = loadImage("assets/halak.png");
   sprite = loadImage("assets/fish copy.png");
-  canvas = createCanvas(window.innerWidth, window.innerHeight*0.8);
+  canvasSetup();
   canvas.parent('fishery');
   //createP(displayDensity());
 
-centerPoint = createVector(width/2, height/2);
-positionModifier = createVector(0,0);
+  positionModifier = createVector(0, 0);
 
   school = new School();
   for (var i = 0; i < 50; i++) {
-    var b = new Fish(centerPoint.x-30, centerPoint.y);
+    var b = new Fish(centerPoint.x - 30, centerPoint.y);
     school.addFish(b);
   }
   imageMode(CENTER);
-  
+
 }
 
 function draw() {
-clear();
+  clear();
   mousePosition = createVector(mouseX, mouseY);
-  positionModifier = createVector(-(mouseX-width/2)/(width/2), -(mouseY-height/2)/(height/2));
+  positionModifier = createVector(-(mouseX - width / 2) / (width / 2), -(mouseY - height / 2) / (height / 2));
   school.run();
   for (let b of school.schoolOfFish) {
     b.render();
   }
-  image(logo, centerPoint.x+positionModifier.x*logoWeight, centerPoint.y+positionModifier.y*logoWeight, logo.width, logo.height);
-strokeWeight(1);
-stroke(200);
-line(0,height,width,height);
+  image(logo, centerPoint.x + positionModifier.x * logoWeight, centerPoint.y + positionModifier.y * logoWeight, logo.width, logo.height);
+ /*
+  strokeWeight(1);
+  stroke(200);
+  line(0, height - 1, width, height - 1);
+*/
 }
 
 ///////////////////////////////////////////////SCHOOL
@@ -82,7 +85,7 @@ function Fish(x, y) {
   this.dim = 3.0;
   this.maxspeed = 3; // Maximum speed
   this.maxforce = 0.05; // Maximum steering force
-  this.affinity = (Math.random(0.9,1.1));
+  this.affinity = (Math.random(0.9, 1.1));
 }
 
 Fish.prototype.run = function(schoolOfFish) {
@@ -107,17 +110,17 @@ Fish.prototype.school = function(schoolOfFish) {
   var d = dist(this.position.x, this.position.y, centerPoint.x, centerPoint.y);
   var multiplier = 0;
   var force = 1.5;
-  if (d < 200*this.affinity) {
+  if (d < 200 * this.affinity) {
     multiplier = -2;
   }
-  if (d > 300*this.affinity) {
+  if (d > 300 * this.affinity) {
     multiplier = 1;
   }
-  
+
   var mDist = dist(this.position.x, this.position.y, mousePosition.x, mousePosition.y);
-  var mForceMultiplier = constrain(mDist/(Math.max(50,width/4)),0,1);
-  mForceMultiplier = 1-mForceMultiplier;
-  m.mult(mForceMultiplier*-3);
+  var mForceMultiplier = constrain(mDist / (Math.max(50, width / 4)), 0, 1);
+  mForceMultiplier = 1 - mForceMultiplier;
+  m.mult(mForceMultiplier * -3);
   cent.mult(multiplier * force);
   sep.mult(3.2);
   ali.mult(1.5);
@@ -160,7 +163,7 @@ Fish.prototype.render = function() {
   push();
   translate(this.position.x, this.position.y);
   rotate(theta);
-  image(sprite,0,0);
+  image(sprite, 0, 0);
   pop();
 }
 
@@ -176,7 +179,7 @@ Fish.prototype.separate = function(schoolOfFish) {
   var desiredseparation = 25.0;
   var steer = createVector(0, 0);
   var count = 0;
-  
+
   for (var i = 0; i < schoolOfFish.length; i++) {
     var d = p5.Vector.dist(this.position, schoolOfFish[i].position);
     if ((d > 0) && (d < desiredseparation)) {
@@ -247,4 +250,26 @@ Fish.prototype.cohesion = function(schoolOfFish) {
   } else {
     return createVector(0, 0);
   }
+}
+
+function windowResized() {
+  canvasSetup();
+}
+
+function canvasSetup() {
+  if (firstRun) {
+    firstRun = false;
+    if (window.innerWidth > window.innerHeight) {
+      canvas = createCanvas(window.innerWidth, window.innerHeight * 0.8);
+    } else {
+      canvas = createCanvas(window.innerWidth, window.innerWidth * 0.8);
+    }
+  } else {
+    if (window.innerWidth > window.innerHeight) {
+      canvas = resizeCanvas(window.innerWidth, window.innerHeight * 0.8);
+    } else {
+      canvas = resizeCanvas(window.innerWidth, window.innerWidth * 0.8);
+    }
+  }
+  centerPoint = createVector(width / 2, height / 2);
 }
