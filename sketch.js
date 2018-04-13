@@ -16,15 +16,15 @@ var logo;
 
 function setup() {
   logo = loadImage("assets/halak.png");
-  createCanvas(screen.width, screen.height);
+  createCanvas(windowWidth, windowHeight);
   //createP("Drag the mouse to generate new boids.");
 
-centerPoint = createVector(width/2, height/2);
+centerPoint = createVector(windowWidth/2, windowHeight/2.2);
 
   flock = new Flock();
   // Add an initial set of boids into the system
   for (var i = 0; i < 100; i++) {
-    var b = new Boid(width / 2, height / 2);
+    var b = new Boid(centerPoint.x, centerPoint.y);
     flock.addBoid(b);
   }
   imageMode(CENTER);
@@ -35,16 +35,21 @@ function draw() {
   mousePosition = createVector(mouseX, mouseY);
   flock.run();
   for (let b of flock.boids) {
+    /*
     if (b.isFront == false) {
       b.render();
     }
+    */
+    b.render();
   }
-  image(logo, width / 2, height / 2, logo.width / 3, logo.height / 3);
+  image(logo, centerPoint.x, centerPoint.y, logo.width / 3, logo.height / 3);
+  /*
   for (let b of flock.boids) {
     if (b.isFront == true) {
       b.render();
     }
   }
+  */
 }
 
 // Add a new boid into the System
@@ -87,7 +92,7 @@ function Boid(x, y) {
   this.velocity = createVector(random(-1, 1), random(-1, 1));
   this.position = createVector(x, y);
   this.r = 3.0;
-  this.maxspeed = 3; // Maximum speed
+  this.maxspeed = 2; // Maximum speed
   this.maxforce = 0.05; // Maximum steering force
 }
 
@@ -114,15 +119,16 @@ Boid.prototype.flock = function(boids) {
   var d = dist(this.position.x, this.position.y, centerPoint.x, centerPoint.y);
   var multiplier = 0;
   var force = 2.0;
-  if (d < 50) {
+  if (d < 75) {
     multiplier = -1;
   }
-  if (d > 100) {
+  if (d > 150) {
     multiplier = 1;
   }
   
   var mDist = dist(this.position.x, this.position.y, mousePosition.x, mousePosition.y);
-  var mForceMultiplier = constrain(mDist/(width/2),0,1);
+  var mForceMultiplier = constrain(mDist/(Math.max(50,width/4)),0,1);
+  mForceMultiplier = 1-mForceMultiplier;
   m.mult(mForceMultiplier*-2);
   cent.mult(multiplier * force);
   sep.mult(2.5);
