@@ -45,6 +45,11 @@ body {}
   text-align: justify;
 }
 
+.content{
+  padding:10px;
+  
+}
+
 span {
   display: inline-block;
   vertical-align: middle;
