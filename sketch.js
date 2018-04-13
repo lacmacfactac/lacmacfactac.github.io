@@ -1,192 +1,274 @@
-var colorTable = [];
-var pixelTable = [];
+/*
+ * @name Flocking
+ * @description Demonstration of Craig Reynolds' "Flocking" behavior.
+ * See: http://www.red3d.com/cwr/
+ * Rules: Cohesion, Separation, Alignment
+ * (from <a href="http://natureofcode.com">natureofcode.com</a>).
+ *  Drag mouse to add boids into the system.
+ */
 
-var curs = 0;
-var limit = 1;
-var stripLength = 8;
 
-var currentTime = 0;
-var prevTime = 0;
-var interval = 100;
-var colorDataRaw;
-var pixelDataRaw;
-var unit;
-var prt;
-var mode = 0; // 0: once, 1: hold, 2: toggle 
-var enabled = false;
-var debug = false;
-var fuse = false;
-var verticalOffset = 0;
+var flock;
+var mousePosition;
+var centerPoint;
+var text;
+var logo;
 
-var realFps = 0;
 function setup() {
-    noCursor();
-    createCanvas(displayWidth, displayHeight+verticalOffset);
-    canvasMagic();
-    unit = displayHeight/(stripLength+1);
-    if(displayWidth > displayHeight){
-        prt = true; 
-    } else {
-        prt = false;
-    }
-    background(127);
+  logo = loadImage("assets/halak.png");
+  createCanvas(screen.width, screen.height);
+  //createP("Drag the mouse to generate new boids.");
 
-    var urlP = getURLParams();
-    if(!(urlP.colors ===undefined)){
-        colorDataRaw = split(urlP.colors,",");
-        var fullCol = 0;
-        for(var i = 0; i < colorDataRaw.length;){
-            colorTable[fullCol] = [];
-            for(var c = 0; c < 3; c++){
-                colorTable[fullCol][c] = int(colorDataRaw[i]);
-                i++;
-            }
-            fullCol++;
-        }
-    } else {
-        colorTable[0] = [255,255,255];
-    }
+centerPoint = createVector(width/2, height/2);
 
-    if(!(urlP.pixels ===undefined)){
-        pixelDataRaw = split(urlP.pixels,",");
-        var slit = 0;
-        for(var i = 0; i < pixelDataRaw.length;){
-            pixelTable[slit] = [];
-            for(var p = 0; p < stripLength; p++){
-                pixelTable[slit][p] = int(pixelDataRaw[i]);
-                i++;
-            }
-            slit++;
-        }
-        limit = slit;
-    } else {
-        pixelTable[0] = [0,0,0,0,0,0,0,0];
-
-    }
-
-    if(!(urlP.mode ===undefined)){
-        var modeHolder = urlP.mode;
-        if(modeHolder == "once" || modeHolder == "0"){
-            mode = 0;
-        } else if(modeHolder == "hold" || modeHolder == "1"){
-            mode = 1;
-        } else if(modeHolder == "toggle" || modeHolder == "2"){
-            mode = 2;
-        } else {
-            mode = 2;
-        }
-    } else {
-        mode = 2;
-    }
-
-    if(!(urlP.fps  ===undefined)){
-        frameRate(int(urlP.fps));
-    }
-
-    if(!(urlP.debug === undefined)){
-    if(urlP.debug == 1 || urlP.debug == "true"){
-        debug = true;
-    }
-    }
-    ellipseMode(CENTER);
-    background(0);
+  flock = new Flock();
+  // Add an initial set of boids into the system
+  for (var i = 0; i < 100; i++) {
+    var b = new Boid(width / 2, height / 2);
+    flock.addBoid(b);
+  }
+  imageMode(CENTER);
 }
 
 function draw() {
-    background(0);
-    if(enabled){
-    for(var i = 0; i < 8; i++){
-        var colorHolder = colorTable[pixelTable[curs][i]];
-        fill(colorHolder[0],colorHolder[1],colorHolder[2]);
-        ellipse(width/2,(unit/2)+(i+0.5)*unit,unit*.8,unit*.8);
+  background(255);
+  mousePosition = createVector(mouseX, mouseY);
+  flock.run();
+  for (let b of flock.boids) {
+    if (b.isFront == false) {
+      b.render();
     }
-    curs++;
-    if(curs >= limit){
-        curs = 0;
-        switch(mode){
-            case 0:
-                enabled = false;
-                break;
-            case 1:
-                break;
-                
-            case 2:
-                break;
-                
-            default:
-                break;
-                
-        }
+  }
+  image(logo, width / 2, height / 2, logo.width / 3, logo.height / 3);
+  for (let b of flock.boids) {
+    if (b.isFront == true) {
+      b.render();
     }
-
-}
-    if(debug){
-        fill(255);
-    prevTime = currentTime;
-    currentTime = millis();
-    realFps = 1000.0/(currentTime-prevTime);
-        var txt ="~" + String(int(realFps))+" fps\n" +
-            "Lines: " + String(curs+1) +"/"+String(limit) + "\n" +
-            "Colors: " + String(colorTable.length) + "\n" +
-            "Mode: " + (mode == 0 ? "play once on touch" : (mode == 1 ? "play while held" : "play until touched again"))+ " (" +String(mode) + ")" +"\n"+
-        "Touched: " + (mouseIsPressed ? "yes" : "no");
-        text(txt,100,20);
-    }
+  }
 }
 
-function windowResized() {
-    canvasMagic();
+// Add a new boid into the System
+function mouseDragged() {
+  flock.addBoid(new Boid(mouseX, mouseY));
 }
 
-function canvasMagic(){
-    
-    resizeCanvas(windowWidth, windowHeight);
-    unit = displayHeight/(stripLength+1);
-    
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
+
+// Flock object
+// Does very little, simply manages the array of all the boids
+
+function Flock() {
+  // An array for all the boids
+  this.boids = []; // Initialize the array
 }
 
-
-function mousePressed(){
-    if(fuse){
-    curs = 0;
-    switch(mode){
-        case 0:
-        enabled = true;
-        break;
-
-        case 1:
-        enabled = true;
-        break;
-
-        case 2:
-        enabled=!enabled;
-        break;
-
-        default:
-        break;
-
-    }
-    } else {
-    fullscreen(true);
-        fuse = true;
-    }
+Flock.prototype.run = function() {
+  for (var i = 0; i < this.boids.length; i++) {
+    this.boids[i].run(this.boids); // Passing the entire list of boids to each boid individually
+  }
 }
 
-function mouseReleased(){
+Flock.prototype.addBoid = function(b) {
+  this.boids.push(b);
+}
 
-    switch(mode){
-        case 0:
-        break;
+// The Nature of Code
+// Daniel Shiffman
+// http://natureofcode.com
 
-        case 1:
-        enabled = false;
-        break;
+// Boid class
+// Methods for Separation, Cohesion, Alignment added
 
-        case 2:
-        break;
+function Boid(x, y) {
+  this.isFront = (Math.random() >= 0.5 ? true : false);
+  this.acceleration = createVector(0, 0);
+  this.velocity = createVector(random(-1, 1), random(-1, 1));
+  this.position = createVector(x, y);
+  this.r = 3.0;
+  this.maxspeed = 3; // Maximum speed
+  this.maxforce = 0.05; // Maximum steering force
+}
 
-        default:
-        break;
+Boid.prototype.run = function(boids) {
+  this.flock(boids);
+  this.update();
+  this.borders();
+  //this.render();
+}
 
+Boid.prototype.applyForce = function(force) {
+  // We could add mass here if we want A = F / M
+  this.acceleration.add(force);
+}
+
+// We accumulate a new acceleration each time based on three rules
+Boid.prototype.flock = function(boids) {
+  var sep = this.separate(boids); // Separation
+  var ali = this.align(boids); // Alignment
+  var coh = this.cohesion(boids); // Cohesion
+  var cent = this.seek(centerPoint);
+  var m = this.seek(mousePosition);
+  // Arbitrarily weight these forces
+  var d = dist(this.position.x, this.position.y, centerPoint.x, centerPoint.y);
+  var multiplier = 0;
+  var force = 2.0;
+  if (d < 50) {
+    multiplier = -1;
+  }
+  if (d > 100) {
+    multiplier = 1;
+  }
+  
+  var mDist = dist(this.position.x, this.position.y, mousePosition.x, mousePosition.y);
+  var mForceMultiplier = constrain(mDist/(width/2),0,1);
+  m.mult(mForceMultiplier*-2);
+  cent.mult(multiplier * force);
+  sep.mult(2.5);
+  ali.mult(1.0);
+  coh.mult(2.0);
+  // Add the force vectors to acceleration
+  this.applyForce(m);
+  this.applyForce(cent);
+  this.applyForce(sep);
+  this.applyForce(ali);
+  this.applyForce(coh);
+}
+
+// Method to update location
+Boid.prototype.update = function() {
+  // Update velocity
+  this.velocity.add(this.acceleration);
+  // Limit speed
+  this.velocity.limit(this.maxspeed);
+  this.position.add(this.velocity);
+  // Reset accelertion to 0 each cycle
+  this.acceleration.mult(0);
+}
+
+// A method that calculates and applies a steering force towards a target
+// STEER = DESIRED MINUS VELOCITY
+Boid.prototype.seek = function(target) {
+  var desired = p5.Vector.sub(target, this.position); // A vector pointing from the location to the target
+  // Normalize desired and scale to maximum speed
+  desired.normalize();
+  desired.mult(this.maxspeed);
+  // Steering = Desired minus Velocity
+  var steer = p5.Vector.sub(desired, this.velocity);
+  steer.limit(this.maxforce); // Limit to maximum steering force
+  return steer;
+}
+
+Boid.prototype.render = function() {
+  // Draw a triangle rotated in the direction of velocity
+  var theta = this.velocity.heading() + radians(90);
+  noFill();
+  stroke(220);
+  push();
+  translate(this.position.x, this.position.y);
+  rotate(theta + PI);
+  beginShape();
+  vertex(0, this.r * 2);
+  vertex(this.r, 0);
+  vertex(-this.r, -this.r * 3);
+  vertex(this.r, -this.r * 3);
+  vertex(-this.r, 0);
+
+  /*
+  vertex(0, -this.r * 2);
+  vertex(-this.r, this.r * 2);
+  vertex(this.r, this.r * 2);
+  */
+  endShape(CLOSE);
+  pop();
+}
+
+// Wraparound
+Boid.prototype.borders = function() {
+  if (this.position.x < -this.r) this.position.x = width + this.r;
+  if (this.position.y < -this.r) this.position.y = height + this.r;
+  if (this.position.x > width + this.r) this.position.x = -this.r;
+  if (this.position.y > height + this.r) this.position.y = -this.r;
+}
+
+// Separation
+// Method checks for nearby boids and steers away
+Boid.prototype.separate = function(boids) {
+  var desiredseparation = 25.0;
+  var steer = createVector(0, 0);
+  var count = 0;
+  // For every boid in the system, check if it's too close
+  for (var i = 0; i < boids.length; i++) {
+    var d = p5.Vector.dist(this.position, boids[i].position);
+    // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
+    if ((d > 0) && (d < desiredseparation)) {
+      // Calculate vector pointing away from neighbor
+      var diff = p5.Vector.sub(this.position, boids[i].position);
+      diff.normalize();
+      diff.div(d); // Weight by distance
+      steer.add(diff);
+      count++; // Keep track of how many
     }
+  }
+  // Average -- divide by how many
+  if (count > 0) {
+    steer.div(count);
+  }
+
+  // As long as the vector is greater than 0
+  if (steer.mag() > 0) {
+    // Implement Reynolds: Steering = Desired - Velocity
+    steer.normalize();
+    steer.mult(this.maxspeed);
+    steer.sub(this.velocity);
+    steer.limit(this.maxforce);
+  }
+  return steer;
+}
+
+// Alignment
+// For every nearby boid in the system, calculate the average velocity
+Boid.prototype.align = function(boids) {
+  var neighbordist = 50;
+  var sum = createVector(0, 0);
+  var count = 0;
+  for (var i = 0; i < boids.length; i++) {
+    var d = p5.Vector.dist(this.position, boids[i].position);
+    if ((d > 0) && (d < neighbordist)) {
+      sum.add(boids[i].velocity);
+      count++;
+    }
+  }
+  if (count > 0) {
+    sum.div(count);
+    sum.normalize();
+    sum.mult(this.maxspeed);
+    var steer = p5.Vector.sub(sum, this.velocity);
+    steer.limit(this.maxforce);
+    return steer;
+  } else {
+    return createVector(0, 0);
+  }
+}
+
+// Cohesion
+// For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
+Boid.prototype.cohesion = function(boids) {
+  var neighbordist = 50;
+  var sum = createVector(0, 0); // Start with empty vector to accumulate all locations
+  var count = 0;
+  for (var i = 0; i < boids.length; i++) {
+    var d = p5.Vector.dist(this.position, boids[i].position);
+    if ((d > 0) && (d < neighbordist)) {
+      sum.add(boids[i].position); // Add location
+      count++;
+    }
+  }
+  if (count > 0) {
+    sum.div(count);
+    return this.seek(sum); // Steer towards the location
+  } else {
+    return createVector(0, 0);
+  }
 }
