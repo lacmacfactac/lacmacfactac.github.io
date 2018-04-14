@@ -7,7 +7,9 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-body {}
+body {
+    /*overflow: hidden;*/
+}
 
 
 .videoBox {
@@ -46,8 +48,7 @@ body {}
 }
 
 .block {
-    float: left;
-    clear: left;
+    margin:auto;
     width: 100%;
     text-align: center;
 }
@@ -79,12 +80,6 @@ body {}
     width:90%;
     padding:10px;
 }
-.sticky{
-    position:sticky;
-    top:0;
-
-}
-
 span {
     display: inline-block;
     vertical-align: middle;
@@ -97,6 +92,8 @@ span {
     .textBlock {
         width: 100%;
     }
+    
+    
 }
 
 a:link {
