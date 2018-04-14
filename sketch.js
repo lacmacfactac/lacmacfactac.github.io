@@ -26,9 +26,14 @@ p5.disableFriendlyErrors = true;
 var firstRun = true;
 var menuHeight = 80;
 
-function setup() {
+function preload(){
+    
   logo = loadImage("assets/halak.png");
   sprite = loadImage("assets/fish copy.png");
+    
+}
+
+function setup() {
   canvasSetup();
   canvas.parent('fishery');
   //createP(displayDensity());
@@ -36,10 +41,12 @@ function setup() {
   positionModifier = createVector(0, 0);
 
   school = new School();
+    
   for (var i = 0; i < 50; i++) {
     var b = new Fish(centerPoint.x - 30, centerPoint.y);
     school.addFish(b);
   }
+  
   imageMode(CENTER);
 
 }
