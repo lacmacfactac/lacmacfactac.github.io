@@ -96,6 +96,11 @@ span {
     
 }
 
+a{
+    z-index: 1;
+    
+}
+
 a:link {
     color: #333333;
     background-color: transparent;
