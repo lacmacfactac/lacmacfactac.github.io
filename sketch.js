@@ -26,6 +26,8 @@ p5.disableFriendlyErrors = true;
 var firstRun = true;
 var menuHeight = 80;
 
+var dimLevel = 0;
+
 function preload(){
 
     logo = loadImage("assets/halak.png");
@@ -52,6 +54,10 @@ function setup() {
 }
 
 function draw() {
+    if(dimLevel <= 255){
+        tint(255,dimLevel);
+        dimLevel+=5;
+    }
     clear();
     mousePosition = createVector(mouseX, mouseY);
     positionModifier = createVector(-(mouseX - width / 2) / (width / 2), -(mouseY - height / 2) / (height / 2));
