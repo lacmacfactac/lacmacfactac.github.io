@@ -57,6 +57,8 @@ function draw() {
     if(dimLevel <= 255){
         tint(255,dimLevel);
         dimLevel+=5;
+    } else{
+        noTint();
     }
     clear();
     mousePosition = createVector(mouseX, mouseY);
