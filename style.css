@@ -8,6 +8,7 @@ body {
 }
 
 body {
+    background-image: url("assets/grain.png");
     /*overflow: hidden;*/
 }
 
