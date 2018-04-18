@@ -27,6 +27,7 @@ var firstRun = true;
 var menuHeight = 80;
 
 var dimLevel = 0;
+var parentDiv;
 
 function preload(){
 
@@ -36,8 +37,14 @@ function preload(){
 }
 
 function setup() {
+    /*
+    canvas = createCanvas(100,100);
+    firstRun = false;
+    */
     canvasSetup();
-    canvas.parent('fishery');
+    canvas.parent('#fishery');
+    parentDiv = select("#fishery");
+    //canvas = resizeCanvas(parentDiv.width, parentDiv.height);
     //createP(displayDensity());
 
     positionModifier = createVector(0, 0);
@@ -54,12 +61,14 @@ function setup() {
 }
 
 function draw() {
+    /*
     if(dimLevel <= 255){
         tint(255,dimLevel);
         dimLevel+=5;
     } else{
         noTint();
     }
+    */
     clear();
     mousePosition = createVector(mouseX, mouseY);
     positionModifier = createVector(-(mouseX - width / 2) / (width / 2), -(mouseY - height / 2) / (height / 2));
@@ -67,7 +76,7 @@ function draw() {
     for (var i = school.schoolOfFish.length-1; i >= 0; i--) {
         school.schoolOfFish[i].render();
     }
-    image(logo, centerPoint.x + positionModifier.x * logoWeight, centerPoint.y + positionModifier.y * logoWeight, logo.width, logo.height);
+    //image(logo, centerPoint.x + positionModifier.x * logoWeight, centerPoint.y + positionModifier.y * logoWeight, logo.width, logo.height);
     /*
   strokeWeight(1);
   stroke(200);
@@ -273,6 +282,7 @@ function windowResized() {
 }
 
 function canvasSetup() {
+    /*
     if (firstRun) {
         firstRun = false;
         if (window.innerWidth > window.innerHeight) {
@@ -286,6 +296,13 @@ function canvasSetup() {
         } else {
             canvas = resizeCanvas(window.innerWidth, window.innerWidth-menuHeight);
         }
+    }
+    */
+    if(firstRun){
+    firstRun = false;
+        canvas = createCanvas(window.innerWidth, window.innerHeight);
+    } else {
+        canvas = resizeCanvas(window.innerWidth, window.innerHeight);
     }
     centerPoint = createVector(width / 2, height / 2);
 }
