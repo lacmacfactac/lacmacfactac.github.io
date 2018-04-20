@@ -1,13 +1,3 @@
-/*
- * @name Schooling
- * @description Demonstration of Craig Reynolds' "Schooling" behavior.
- * See: http://www.red3d.com/cwr/
- * Rules: Cohesion, Separation, Alignment
- * (from <a href="http://natureofcode.com">natureofcode.com</a>).
- *  Drag mouse to add fish into the system.
- */
-
-
 var school;
 var mousePosition;
 var centerPoint;
@@ -109,8 +99,8 @@ function Fish(x, y) {
     this.velocity = createVector(random(-1, 1), random(-1, 1));
     this.position = createVector(x, y);
     this.dim = 3.0;
-    this.maxspeed = 3; // Maximum speed
-    this.maxforce = 0.05; // Maximum steering force
+    this.maxspeed = 3;
+    this.maxforce = 0.05;
     this.affinity = (Math.random(0.9, 1.1));
 }
 
@@ -125,14 +115,16 @@ Fish.prototype.applyForce = function(force) {
     this.acceleration.add(force);
 }
 
-// We accumulate a new acceleration each time based on three rules
+
+
 Fish.prototype.school = function(schoolOfFish) {
-    var sep = this.separate(schoolOfFish); // Separation
-    var ali = this.align(schoolOfFish); // Alignment
-    var coh = this.cohesion(schoolOfFish); // Cohesion
-    var cent = this.seek(centerPoint);
-    var m = this.seek(mousePosition);
-    // Arbitrarily weight these forces
+    var sep = this.separate(schoolOfFish); // Separate
+    var ali = this.align(schoolOfFish); // Align
+    var coh = this.cohesion(schoolOfFish); // Cohere
+    var cent = this.seek(centerPoint); // Attraction to center
+    var m = this.seek(mousePosition); // Attraction to mouse
+
+    
     var d = dist(this.position.x, this.position.y, centerPoint.x, centerPoint.y);
     var multiplier = 0;
     var force = 1.5;
@@ -159,7 +151,6 @@ Fish.prototype.school = function(schoolOfFish) {
     this.applyForce(coh);
 }
 
-// Method to update location
 Fish.prototype.update = function() {
     // Update velocity
     this.velocity.add(this.acceleration);
@@ -170,21 +161,16 @@ Fish.prototype.update = function() {
     this.acceleration.mult(0);
 }
 
-// A method that calculates and applies a steering force towards a target
-// STEER = DESIRED MINUS VELOCITY
 Fish.prototype.seek = function(target) {
-    var desired = p5.Vector.sub(target, this.position); // A vector pointing from the location to the target
-    // Normalize desired and scale to maximum speed
+    var desired = p5.Vector.sub(target, this.position);
     desired.normalize();
     desired.mult(this.maxspeed);
-    // Steering = Desired minus Velocity
     var steer = p5.Vector.sub(desired, this.velocity);
-    steer.limit(this.maxforce); // Limit to maximum steering force
+    steer.limit(this.maxforce);
     return steer;
 }
 
 Fish.prototype.render = function() {
-    // Draw a triangle rotated in the direction of velocity
     var theta = this.velocity.heading() + radians(90);
     push();
     translate(this.position.x, this.position.y);
@@ -211,19 +197,17 @@ Fish.prototype.separate = function(schoolOfFish) {
         if ((d > 0) && (d < desiredseparation)) {
             var diff = p5.Vector.sub(this.position, schoolOfFish[i].position);
             diff.normalize();
-            diff.div(d); // Weight by distance
+            diff.div(d);
             steer.add(diff);
-            count++; // Keep track of how many
+            count++;
         }
     }
-    // Average -- divide by how many
+    
     if (count > 0) {
         steer.div(count);
     }
 
-    // As long as the vector is greater than 0
     if (steer.mag() > 0) {
-        // Implement Reynolds: Steering = Desired - Velocity
         steer.normalize();
         steer.mult(this.maxspeed);
         steer.sub(this.velocity);
@@ -232,8 +216,7 @@ Fish.prototype.separate = function(schoolOfFish) {
     return steer;
 }
 
-// Alignment
-// For every nearby boid in the system, calculate the average velocity
+
 Fish.prototype.align = function(schoolOfFish) {
     var neighbordist = 50;
     var sum = createVector(0, 0);
@@ -257,22 +240,22 @@ Fish.prototype.align = function(schoolOfFish) {
     }
 }
 
-// Cohesion
-// For the average location (i.e. center) of all nearby fish, calculate steering vector towards that location
+
+
 Fish.prototype.cohesion = function(schoolOfFish) {
     var neighbordist = 50;
-    var sum = createVector(0, 0); // Start with empty vector to accumulate all locations
+    var sum = createVector(0, 0);
     var count = 0;
     for (var i = 0; i < schoolOfFish.length; i++) {
         var d = p5.Vector.dist(this.position, schoolOfFish[i].position);
         if ((d > 0) && (d < neighbordist)) {
-            sum.add(schoolOfFish[i].position); // Add location
+            sum.add(schoolOfFish[i].position);
             count++;
         }
     }
     if (count > 0) {
         sum.div(count);
-        return this.seek(sum); // Steer towards the location
+        return this.seek(sum);
     } else {
         return createVector(0, 0);
     }
