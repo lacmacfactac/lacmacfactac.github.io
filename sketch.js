@@ -42,8 +42,9 @@ function setup() {
     firstRun = false;
     */
     canvasSetup();
-    canvas.parent('#fishery');
-    parentDiv = select("#fishery");
+    canvas.parent('#fishSketch');
+    //canvas.parent('#fishery');
+    //parentDiv = select("#fishery");
     //canvas = resizeCanvas(parentDiv.width, parentDiv.height);
     //createP(displayDensity());
 
@@ -150,7 +151,7 @@ Fish.prototype.school = function(schoolOfFish) {
     sep.mult(3.2);
     ali.mult(1.5);
     coh.mult(2.5);
-    // Add the force vectors to acceleration
+    
     this.applyForce(m);
     this.applyForce(cent);
     this.applyForce(sep);
