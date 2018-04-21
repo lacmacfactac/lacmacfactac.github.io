@@ -43,7 +43,7 @@ function setup() {
     school = new School();
 
     for (var i = 0; i < 50; i++) {
-        var b = new Fish(centerPoint.x - 30, centerPoint.y);
+        var b = new Fish(centerPoint.x, centerPoint.y);
         school.addFish(b);
     }
 
