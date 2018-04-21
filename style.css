@@ -72,7 +72,8 @@ body {
 .item {
     width:33%;
     float:left;
-    position: relative; 
+    margin: auto;
+    position: relative;
 
 }
 .itemWrapper{
