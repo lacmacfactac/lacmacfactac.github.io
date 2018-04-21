@@ -1,3 +1,33 @@
+<!--<html>
+
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Portfolio of LAszlo Andras Halak, a budapest based multimedia artist">
+<meta name="keywords" content="media, art, arduino, graphics, mome, moholy, budapest">
+<meta name="author" content="Laszlo Andras Halak">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Halák László András</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed|Roboto+Mono|Roboto:300" rel="stylesheet">
+</head>
+
+<body style="margin:0; border: 0; padding: 0">
+<div id="mainDiv" style="float: left; position: absolute; display:block; width: 100%; top:0; bottom: 60px; background-color: aqua; padding: 0; margin: 0; overflow-y: scroll">
+<div style="float: left;display: block; width: 50%; height: 800px; background-color: black"></div>
+<div style="float: left;display: block; width: 50%; height: 800px; background-color: red"></div>
+<div style="float: left;display: block; width: 50%; height: 800px; background-color: green"></div>
+<div style="float: left;display: block; width: 50%; height: 800px; background-color: yellow"></div>
+<div style="float: left;display: block; width: 50%; height: 800px; background-color: mediumaquamarine"></div>
+<div style="float: left;display: block; width: 50%; height: 800px; background-color: orange"></div>
+</div>
+<div id="bottomBar" style="float: left; position: absolute; display: block; width: 100%; height:60px; bottom:0; left:0; background-color: #fafafa; padding: 0; margin:0">
+
+</div>
+</body>
+</html>-->
+
+
 <!DOCTYPE html>
 
 <html>
@@ -22,41 +52,17 @@
     </head>
 
     <body>
-        <div id="fishery">
-            <div id="logoHolder" style="position: absolute;top:0;left:0;width:100%;height:100%; z-index: 10">
-                <a href = "#works"><img id="logo" src="assets/halak.png"></a>
+        <div class="wrapper" id="mainDiv">
+            <div style="width: 100%; height: 100%">
+                <div id="logoHolder" style="position: absolute;top:0;left:0;width:100%;height:100%; z-index: 10">
+                    <a href = "#works"><img id="logo" src="assets/halak.png"></a>
+                </div>
+                <div id="fishSketch" style="position: absolute; display: block; float: left; top:0;left:0;width:100%;height:100%;"></div>
             </div>
-            <div id="fishSketch" style="position: absolute;top:0;left:0;width:100%;height:100%; z-index: 5"></div>
-        </div> 
 
-        <div id="menuBar" class="block">
-            <div class="menu">
-                <h3>
-                    <a href="#works">
-                        <span>works</span>
-                    </a>
-                </h3>
-            </div>
-            <div class="menu">
-                <h3>
-                    <a href="#bio">
-                        <span>bio</span>
-                    </a>
-                </h3>
-            </div>
-            <div class="menu">
-                <h3>
-                    <a href="#contact">
-                        <span>contact</span>
-                    </a>
-                </h3>
-            </div>
-        </div>
-
-        <div style="margin: auto; padding:10px">
-            <div id="mainBody">
-                <div class="block" id="works">
-                    <div id = "Tycho" class="item">
+            <div class="block" id="works">
+                <div id = "Tycho" class="item">
+                    <div class="itemWrapper">
                         <div class="title textContent">
                             <h2>Incident ::: Tycho 3Helium Refinery</h2>
                         </div>
@@ -66,9 +72,14 @@
                         <div class ="videoBox">
                             <iframe src="https://www.youtube.com/embed/9ozu0R3ug5o" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                         </div>
-
+                        <br>
+                        <br>
+                        <br>
+                        <img id="bottomLeftCorner" src="assets/blCorner.png">
                     </div>
-                    <div id = "Extramission" class="item">
+                </div>
+                <div id = "Extramission" class="item">
+                    <div class="itemWrapper">
                         <div class="title textContent">
                             <h2>Extramission</h2> 
                         </div>
@@ -80,8 +91,14 @@
                         <div class ="videoBox">
                             <iframe src="https://www.youtube.com/embed/KuUymVMLu8s" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                         </div>
+                        <br>
+                        <br>
+                        <br>
+                        <img id="bottomLeftCorner" src="assets/blCorner.png">
                     </div>
-                    <div id = "I forgot how to Budapest" class="item">
+                </div>
+                <div id = "I forgot how to Budapest" class="item">
+                    <div class="itemWrapper">
                         <div class="title textContent">
                             <h2>I forgot how to Budapest</h2>
                         </div>
@@ -106,32 +123,61 @@
                         <div class ="videoBox">
                             <iframe src="https://www.youtube.com/embed/ohwc6b-cbRU" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                         </div>
-                    </div>
-
-                </div>
-                <div id="bio" class="block">
-                    <h1>Bio</h1>
-                    <div class="textBlock">
-                        László András Halák is a Budapest-based multimedia artist, practitioner of semiconductor magic and burner of fingers (strictly his own).
+                        <br>
+                        <br>
+                        <br>
+                        <img id="bottomLeftCorner" src="assets/blCorner.png">
                     </div>
                 </div>
 
             </div>
+
+            <div class="block" style="height: 50%"></div>
+
+            <div id="bio" class="block">
+                <h1>Bio</h1>
+                <div class="textBlock">
+                    László András Halák is a Budapest-based multimedia artist, practitioner of semiconductor magic and burner of fingers (strictly his own).
+                </div>
+            </div>
+            <div  id="contact" class="block">
+                <h1>Contact</h1>
+                <div style="width:90%; margin:auto; height: 60px">
+                    <div class="contactBlock">
+                        <h5><a href="https://facebook.com/lejszi">facebook</a></h5>
+                    </div>
+                    <div class="contactBlock">
+                        <h5><a href="mailto:andras.laszlo.halak@gmail.com">andras.laszlo.halak@gmail.com</a></h5>
+                    </div>
+                    <div class="contactBlock">
+                        <h5><a href="https://instagram.com/lacmacfactac/">instagram</a></h5>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div  id="contact" class="block">
-            <h1>Contact</h1>
-            <div style="width:90%; margin:auto; height: 60px">
-                <div class="contactBlock">
-                    <h5><a href="https://facebook.com/lejszi">facebook</a></h5>
-                </div>
-                <div class="contactBlock">
-                    <h5><a href="mailto:andras.laszlo.halak@gmail.com">andras.laszlo.halak@gmail.com</a></h5>
-                </div>
-                <div class="contactBlock">
-                    <h5><a href="https://instagram.com/lacmacfactac/">instagram</a></h5>
-                </div>
+        <div class="wrapper" id="bottomBar">
+            <div class="menu">
+                <h3>
+                    <a href="#works">
+                        <span>works</span>
+                    </a>
+                </h3>
+            </div>
+            <div class="menu">
+                <h3>
+                    <a href="#bio">
+                        <span>bio</span>
+                    </a>
+                </h3>
+            </div>
+            <div class="menu">
+                <h3>
+                    <a href="#contact">
+                        <span>contact</span>
+                    </a>
+                </h3>
             </div>
         </div>
     </body>
-
+    </body>
 </html>

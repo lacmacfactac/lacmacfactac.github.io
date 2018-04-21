@@ -1,17 +1,45 @@
 html,
 body {
-    height: 100%;
-    padding: 0px;
-    margin: 0px;
-    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    overflow: hidden;
     font-family: 'Roboto', sans-serif;
 }
 
-body {
-    background-image: url("assets/grain.png");
-    /*overflow: hidden;*/
+#mainDiv {top:0; bottom: 60px; overflow-y: scroll;
 }
 
+#bottomBar {
+    height:60px; bottom:0; overflow:hidden; 
+}
+
+#logo {  
+    max-height: 100%;  
+    max-width: 100%; 
+    width: auto;
+    height: auto;
+    position: absolute;  
+    top: 0;  
+    bottom: 0;  
+    left: 0;  
+    right: 0;  
+    margin: auto;
+}
+.wrapper {
+    float: left; position: absolute; display:block; width: 100%; padding: 0; margin: 0; overflow-x: hidden;
+}
+
+.menu {
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+    background: #fbfbfb;
+    float: left;
+    width: 33.33%;
+    font-family: 'Roboto Condensed', sans-serif;
+    overflow-y: hidden;
+}
 
 .videoBox {
     margin: auto;
@@ -20,6 +48,7 @@ body {
     height: 0;
     padding-top: 56.25%;
     width:90%;
+    border:50px;
 }
 .videoBox iframe {
     position: absolute;
@@ -41,17 +70,27 @@ body {
 }
 
 .item {
-    /*float: left;
-    width: 50%;
-    */
-    width:500px;
-    margin:auto;
+    width:33%;
+    float:left;
+    position: relative;
+}
+.itemWrapper{
+    margin: 10px;
+    background-color:#fafafa;
+    position: relative;
+    
 }
 
 .block {
+    
     margin:auto;
-    width: 100%;
+    width: 90%;
     text-align: center;
+    clear: left;
+    padding-top: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 50px;
 }
 
 .contactBlock {
@@ -69,12 +108,10 @@ body {
 }
 
 .textContent{
-    padding:10px;
+    padding:20px;
     text-align: justify;
 }
 .title{
-    margin-top: 25px;
-    margin-bottom: 35px;
     text-align: center;
 
 }
@@ -89,22 +126,20 @@ span {
     vertical-align: middle;
 }
 
-@media screen and (max-width:500px) {
-    .menu,
-    .item,
-    .contactBlock,
-    .textBlock {
-        width: 100%;
+@media screen and (max-width:900px) {
+    .item{
+        width:50%
     }
-    
-    #endBlock{
-        height:80%;
-    }
-    
 }
 
-a{
-    /*z-index: 1;*/
+@media screen and (max-width:600px) {
+    .item{
+        width:100%
+    }
+    
+    .contactBlock{
+        width: 100%;
+    }
     
 }
 
@@ -131,53 +166,6 @@ a:active {
     background-color: transparent;
     text-decoration: underline;
 }
-
-#fishery {
-    position: relative;
-    margin: auto;
-    padding: 0;
-    display: block;
-    width: 100%;
-    height: 100%;
-    /* This centers our sketch horizontally. */
-    justify-content: center;
-    /* This centers our sketch vertically. */
-    align-items: center;
-    vertical-align: middle;
-    
-}
-
-
-#menuBar{
-    position: absolute;
-    bottom: 0;
-    z-index: 1;
-    
-}
-
-#contact{
-    display:block;
-    height: 30%;
-    
-}
-
-#endBlock{
-    display:block;
-    height:30%;
-}
-
-
-
-
-#logo {  
-    max-height: 100%;  
-    max-width: 100%; 
-    width: auto;
-    height: auto;
-    position: absolute;  
-    top: 0;  
-    bottom: 0;  
-    left: 0;  
-    right: 0;  
-    margin: auto;
+#bottomLeftCorner {
+    display: block; position: absolute; right: 0; bottom:0;
 }
