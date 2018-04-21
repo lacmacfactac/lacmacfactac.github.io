@@ -127,21 +127,10 @@ span {
     vertical-align: middle;
 }
 
-@media screen and (max-width:900px) {
-    .item{
-        width:50%
-    }
-}
-
 @media screen and (max-width:600px) {
-    .item{
+    .item, .contactBlock, .block{
         width:100%
     }
-    
-    .contactBlock{
-        width: 100%;
-    }
-    
 }
 
 a:link {
