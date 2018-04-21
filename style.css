@@ -72,11 +72,12 @@ body {
 .item {
     width:33%;
     float:left;
-    position: relative;
+    position: relative; 
+
 }
 .itemWrapper{
     margin: 10px;
-    background-color:#fafafa;
+    background: linear-gradient(to bottom, #f8f8f8 0%, #ffffff 30%);
     position: relative;
     
 }
