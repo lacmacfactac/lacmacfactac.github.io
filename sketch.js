@@ -19,9 +19,13 @@ var menuHeight = 80;
 var dimLevel = 0;
 var parentDiv;
 
-var fishLimit = 200;
+var fishLimit = 150;
 
 var isMobile = false; //initiate as false
+var trueFrame = 0;
+var prevTime = 0;
+var currentTime = 0;
+var timeStep = 1.0;
 // device detection
 
 function preload(){
@@ -68,8 +72,9 @@ function setup() {
 }
 
 function draw() {
-
-    
+    prevTime = currentTime;
+currentTime = millis();
+    trueFrame = currentTime-prevTime;
     /*
     if(dimLevel <= 255){
         tint(255,dimLevel);
@@ -82,6 +87,8 @@ function draw() {
     mousePosition = createVector(mouseX, mouseY);
     positionModifier = createVector(-(mouseX - width / 2) / (width / 2), -(mouseY - height / 2) / (height / 2));
     school.run();
+    var desiredFrame = 1000/frameRate();
+    timeStep = trueFrame/desiredFrame;
     for (var i = Math.min(school.schoolOfFish.length, fishLimit)-1; i >= 0; i--) {
         school.schoolOfFish[i].render();
     }
@@ -175,7 +182,9 @@ Fish.prototype.update = function() {
     this.velocity.add(this.acceleration);
     // Limit speed
     this.velocity.limit(this.maxspeed);
-    this.position.add(this.velocity);
+    var vel = this.velocity.copy();
+    vel.mult(timeStep);
+    this.position.add(vel);
     // Reset accelertion to 0 each cycle
     this.acceleration.mult(0);
 }
@@ -303,9 +312,9 @@ function canvasSetup() {
     */
     if(firstRun){
         firstRun = false;
-        canvas = createCanvas(window.innerWidth, window.innerHeight);
+        canvas = createCanvas(window.innerWidth, window.innerHeight-60);
     } else {
-        canvas = resizeCanvas(window.innerWidth, window.innerHeight);
+        canvas = resizeCanvas(window.innerWidth, window.innerHeight-60);
     }
     centerPoint = createVector(width / 2, height / 2);
 }

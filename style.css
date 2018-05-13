@@ -70,7 +70,7 @@ body {
 }
 
 .item {
-    width:33%;
+    width:33.33%;
     float:left;
     margin: auto;
     position: relative;
@@ -110,6 +110,7 @@ body {
 }
 
 .textContent{
+    margin: 0;
     padding:20px;
     text-align: justify;
 }
@@ -128,7 +129,13 @@ span {
     vertical-align: middle;
 }
 
-@media screen and (max-width:600px) {
+@media screen and (max-width:1000px) {
+    .item, {
+        width:50%
+    }
+}
+
+@media screen and (max-width:500px) {
     .item, .contactBlock, .block{
         width:100%
     }
