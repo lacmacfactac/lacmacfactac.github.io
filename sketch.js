@@ -19,7 +19,7 @@ var menuHeight = 80;
 var dimLevel = 0;
 var parentDiv;
 
-var fishLimit = 150;
+var fishLimit = 100;
 
 var isMobile = false; //initiate as false
 var trueFrame = 0;
